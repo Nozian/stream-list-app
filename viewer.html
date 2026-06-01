@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Watchlist Organizer</title>
+<link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ===== サイドバー ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="wordmark">
+        <span class="wordmark-swo">SWO</span>
+        <span class="wordmark-title">Watchlist<br>Organizer</span>
+      </div>
+    </div>
+
+    <!-- 検索 -->
+    <div class="search-wrap">
+      <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search-input" class="search-input" placeholder="タイトルを検索…" autocomplete="off" spellcheck="false">
+      <button class="search-clear" id="search-clear" style="display:none">✕</button>
+    </div>
+
+    <!-- サービスフィルター -->
+    <nav class="nav-section">
+      <div class="nav-label">Service</div>
+      <button class="nav-item active" data-svc="all">
+        <span class="nav-dot all"></span>
+        <span class="nav-text">すべて</span>
+        <span class="nav-count" id="count-all">—</span>
+      </button>
+      <button class="nav-item" data-svc="prime">
+        <span class="nav-dot prime"></span>
+        <span class="nav-text">Prime Video</span>
+        <span class="nav-count" id="count-prime">—</span>
+      </button>
+      <button class="nav-item" data-svc="netflix">
+        <span class="nav-dot netflix"></span>
+        <span class="nav-text">Netflix</span>
+        <span class="nav-count" id="count-netflix">—</span>
+      </button>
+      <button class="nav-item" data-svc="unext">
+        <span class="nav-dot unext"></span>
+        <span class="nav-text">U-NEXT</span>
+        <span class="nav-count" id="count-unext">—</span>
+      </button>
+    </nav>
+
+    <!-- 視聴状態フィルター -->
+    <nav class="nav-section">
+      <div class="nav-label">Watch Status</div>
+      <button class="nav-item active" data-watch="all">
+        <span class="nav-text">すべて</span>
+      </button>
+      <button class="nav-item" data-watch="unwatched">
+        <span class="nav-genre-dot" style="background:#4ade80"></span>
+        <span class="nav-text">未視聴</span>
+        <span class="nav-count" id="count-unwatched">—</span>
+      </button>
+      <button class="nav-item" data-watch="watched">
+        <span class="nav-genre-dot" style="background:#6b6658"></span>
+        <span class="nav-text">視聴済み</span>
+        <span class="nav-count" id="count-watched">—</span>
+      </button>
+    </nav>
+
+    <!-- ジャンルフィルター -->
+    <nav class="nav-section nav-genre-section">
+      <div class="nav-label">Genre</div>
+      <div id="genre-nav"></div>
+    </nav>
+
+    <!-- サイドバーフッター -->
+    <div class="sidebar-footer">
+      <div class="sidebar-updated" id="footer-updated"></div>
+      <div class="sidebar-actions">
+        <button class="ghost-btn" id="btn-theme" data-tip="ライト／ダーク切替">☀️</button>
+        <button class="ghost-btn" id="btn-export" data-tip="CSV書き出し｜表示中の全作品を出力">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          CSV
+        </button>
+        <button class="ghost-btn" id="btn-settings" data-tip="設定｜TMDb APIキー・データ管理">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          設定
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== メインエリア ===== -->
+  <main class="main">
+
+    <!-- トップバー -->
+    <div class="topbar">
+      <div class="topbar-left">
+        <span class="result-label" id="result-label">— titles</span>
+      </div>
+      <div class="topbar-right">
+        <div class="sort-group">
+          <span class="sort-label">並び替え</span>
+          <span id="collapse-toggle-wrap"></span>
+          <button class="sort-btn active" data-sort="">追加順</button>
+          <button class="sort-btn" data-sort="title">タイトル</button>
+          <button class="sort-btn" data-sort="star">★評価</button>
+          <button class="sort-btn" data-sort="service">サービス</button>
+        </div>
+        <div class="view-group">
+          <button class="view-btn active" data-view="genre" data-tip="ジャンル別グリッド表示">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn" data-view="list" data-tip="リスト表示">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TMDbバナー -->
+    <div class="tmdb-bar" id="tmdb-banner" style="display:none">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>「その他」が多い場合、TMDb APIキーを設定するとジャンル精度が上がります。</span>
+      <div class="tmdb-bar-input">
+        <input type="text" id="inline-key" placeholder="APIキーを貼り付け">
+        <button id="inline-apply">適用</button>
+      </div>
+    </div>
+
+    <!-- コンテンツ -->
+    <div class="content" id="main-content">
+      <div class="empty-state">
+        <div class="empty-rule"></div>
+        <h2 class="empty-title">No data yet.</h2>
+        <p class="empty-body">各サービスのウォッチリストページを開き、「整理モード」を実行してください。</p>
+        <div class="empty-links">
+          <a href="https://www.amazon.co.jp/gp/video/mystuff/watchlist/" target="_blank" rel="noopener noreferrer" class="empty-link prime">Prime Video</a>
+          <a href="https://www.netflix.com/browse/my-list" target="_blank" rel="noopener noreferrer" class="empty-link netflix">Netflix</a>
+          <a href="https://video.unext.jp/mylist/favorite/video" target="_blank" rel="noopener noreferrer" class="empty-link unext">U-NEXT</a>
+        </div>
+        <div class="empty-rule"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- 設定オーバーレイ -->
+<div class="overlay" id="settings-overlay" style="display:none">
+  <div class="settings-sheet">
+    <div class="settings-head">
+      <h3>設定</h3>
+      <button class="close-btn" id="settings-close">✕</button>
+    </div>
+    <div class="settings-body">
+      <label class="field-label">TMDb API キー（3サービス共通）</label>
+      <input type="text" id="settings-key" class="field-input" placeholder="32文字の英数字">
+      <details class="howto">
+        <summary>キーの取り方（約5分・無料）</summary>
+        <ol>
+          <li><a href="https://www.themoviedb.org/signup" target="_blank" rel="noopener noreferrer">themoviedb.org</a> で無料登録</li>
+          <li>設定 → API → Create → Developer</li>
+          <li>「API Key (v3 auth)」をコピー</li>
+        </ol>
+      </details>
+      <div class="settings-actions">
+        <button class="ghost-btn" id="settings-clear-cache">キャッシュ削除</button>
+        <button class="ghost-btn danger" id="settings-clear-all">全データ削除</button>
+        <button class="primary-btn" id="settings-save">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="viewer.js"></script>
+</body>
+</html>
