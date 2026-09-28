@@ -29,7 +29,7 @@
         "https://www.amazon.co.jp/gp/video/*",
         "https://www.amazon.com/gp/video/*"
       ],
-      "js": ["adapters/prime.js", "content.js"],
+      "js": ["prime.js", "content.js"],
       "css": ["panel.css"],
       "run_at": "document_idle"
     },
@@ -37,7 +37,7 @@
       "matches": [
         "https://www.netflix.com/browse*"
       ],
-      "js": ["adapters/netflix.js", "content.js"],
+      "js": ["netflix.js", "content.js"],
       "css": ["panel.css"],
       "run_at": "document_idle"
     },
@@ -46,7 +46,7 @@
         "https://video.unext.jp/mylist*",
         "https://video.unext.jp/browse*"
       ],
-      "js": ["adapters/unext.js", "content.js"],
+      "js": ["unext.js", "content.js"],
       "css": ["panel.css"],
       "run_at": "document_idle"
     }
