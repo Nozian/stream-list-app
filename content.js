@@ -383,6 +383,7 @@
               <button class="sp-ghost sp-random-btn" id="sp-random" data-tip="🎲 今日の1本｜未視聴の中からランダムに提案">🎲</button>
               <button class="sp-ghost sp-theme-toggle" id="sp-theme-toggle" data-tip="ライト／ダーク切替">${isLightMode?'🌙':'☀️'}</button>
               <button class="sp-ghost" id="swo-allsvc" data-tip="⊞ まとめて見る｜3サービスを横断して一覧">⊞</button>
+              <button class="sp-ghost" id="swo-cloud" data-tip="クラウド版｜他の端末と同期">同期版 ↗</button>
               <button class="sp-ghost" id="swo-refresh" data-tip="↻ 再取得｜最新のウォッチリストを読み込み直す">↻</button>
               <button class="sp-ghost" id="swo-export" data-tip="CSV書き出し｜タイトル・ジャンル・視聴状態・メモを出力">CSV</button>
               <button class="sp-ghost" id="swo-settings" data-tip="設定｜TMDb APIキーの管理・データ削除">設定</button>
@@ -575,6 +576,9 @@
         const w = window.open(url, '_blank');
         if (!w) alert('まとめビューを開けませんでした。ツールバーのアイコンをクリックしてください。');
       } catch(e) { alert('まとめビューを開けませんでした。'); }
+    });
+    organizedPanel.querySelector('#swo-cloud').addEventListener('click', ()=>{
+      window.open('https://swo-watchlist.nozian.chatgpt.site/', '_blank', 'noopener,noreferrer');
     });
 
     // インラインTMDb

@@ -1,15 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Streaming Watchlist Organizer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Prime Video・Netflix・U-NEXTのウォッチリストをジャンル別に整理。視聴予定の作品を一覧・検索しやすくします。",
   "permissions": ["storage"],
   "host_permissions": [
     "https://api.themoviedb.org/*"
   ],
   "action": {
-    "default_title": "Streaming Watchlist Organizer（クリックで一覧を開く）"
+    "default_title": "Streaming Watchlist Organizer（同期版を開く）"
   },
+  "homepage_url": "https://swo-watchlist.nozian.chatgpt.site/",
   "background": {
     "service_worker": "background.js"
   },
