@@ -1,0 +1,33 @@
+#nz-ent-capture{position:fixed;bottom:20px;right:18px;z-index:2147483600;background:#182f44;color:#fff;border:1px solid #4d6a83;border-radius:12px;box-shadow:0 6px 25px #0006;padding:11px 13px;font:12px/1.5 system-ui,sans-serif;max-width:320px}#nz-ent-capture b{display:block;font-size:13px;margin-bottom:4px}#nz-ent-capture .nz-actions{display:flex;gap:6px;flex-wrap:wrap}#nz-ent-capture button{background:#ebf3ff;color:#122942;border:0;border-radius:7px;cursor:pointer;padding:7px 10px;font:inherit}#nz-ent-capture .nz-msg{font-size:11px;color:#b8d8ee;margin:6px 0 0}#nz-ent-capture .nz-min{float:right;background:transparent;color:white;padding:0 4px}#nz-ent-capture.nz-collapsed .nz-actions,#nz-ent-capture.nz-collapsed .nz-msg{display:none}#nz-ent-capture.nz-collapsed{padding:8px}
+
+#nz-ent-grid{background:#101e2b;color:#eaf2f8;padding:12px;margin:14px 0;border-radius:12px;font:13px system-ui,sans-serif}#nz-ent-grid .nz-ent-gridbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:10px}#nz-ent-grid input,#nz-ent-grid select{padding:8px;background:#f8fbff;color:#142943;border:1px solid #a5bbc9;border-radius:7px;min-width:0}#nz-ent-grid .nz-ent-gridbar input{flex:1;min-width:135px}#nz-ent-grid button{padding:8px;background:#d5eafb;border:0;border-radius:7px;cursor:pointer}#nz-ent-grid .nz-ent-gridcards{display:grid;gap:10px;min-width:0}#nz-ent-grid .nz-ent-griditem{background:#192d3e;border-radius:10px;overflow:hidden;min-width:0;padding-bottom:6px}#nz-ent-grid .nz-ent-griditem a{color:white;text-decoration:none;display:block}#nz-ent-grid .nz-ent-griditem img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}#nz-ent-grid .nz-ent-griditem p{margin:7px;font-size:12px;line-height:1.4;overflow-wrap:anywhere}#nz-ent-grid .nz-ent-griditem input{width:calc(100% - 14px);margin:0 7px;padding:5px;font-size:12px}
+/* v1.1: Google/YouTube/Netflix page styles must not override Japanese controls. */
+#nz-ent-capture, #nz-ent-capture *, #nz-ent-grid, #nz-ent-grid * ,
+#nz-ent-stop-fixed, #nz-ent-grid input::placeholder {
+  font-family: Arial, -apple-system, BlinkMacSystemFont, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", Meiryo, sans-serif !important;
+  font-style: normal !important;
+  letter-spacing: normal !important;
+  text-transform: none !important;
+}
+#nz-ent-capture button, #nz-ent-grid button, #nz-ent-grid select, #nz-ent-grid input {
+  font-size: 13px !important; font-weight: 500 !important; line-height: 1.4 !important;
+}
+#nz-ent-grid input, #nz-ent-grid select {color:#132d45 !important;background-color:#fff !important;}
+#nz-ent-grid input::placeholder{color:#516b83 !important;opacity:1 !important;}
+#nz-ent-capture [hidden],#nz-ent-stop-fixed[hidden]{display:none !important;}
+#nz-ent-capture .nz-stop, #nz-ent-stop-fixed {background:#b92333 !important;color:#fff !important;border:2px solid #fff !important;font-weight:700 !important;}
+#nz-ent-stop-fixed{position:fixed;right:18px;bottom:18px;z-index:2147483646;border-radius:10px;padding:13px 19px;cursor:pointer;box-shadow:0 7px 24px #0008;font-size:14px;}
+#nz-ent-capture:has(.nz-stop:not([hidden])){bottom:80px;}
+#nz-ent-capture {overflow-wrap:anywhere;}
+#nz-ent-grid .nz-ent-griditem input {box-sizing:border-box;width:calc(100% - 14px) !important;}
+
+/* v1.4: full video title on hover; native title attribute is the accessibility fallback. */
+#nz-ent-grid .nz-ent-griditem{position:relative;overflow:visible;isolation:isolate}
+#nz-ent-grid .nz-ent-griditem:hover,#nz-ent-grid .nz-ent-griditem:focus-within{z-index:100}
+#nz-ent-grid .nz-ent-title-tooltip{display:none;position:absolute;left:0;bottom:calc(100% - 2px);z-index:1000;
+  width:max-content;max-width:min(420px,80vw);white-space:normal;overflow-wrap:anywhere;
+  background:#09131c;color:#fff;border:1px solid #9fbad2;border-radius:9px;
+  box-shadow:0 8px 24px #0008;padding:10px 12px;font:600 13px/1.55 sans-serif;pointer-events:none}
+#nz-ent-grid .nz-ent-griditem:hover .nz-ent-title-tooltip,
+#nz-ent-grid .nz-ent-griditem:focus-within .nz-ent-title-tooltip{display:block}
+#nz-ent-grid .nz-ent-video-title{overflow-wrap:anywhere;max-height:none;white-space:normal}

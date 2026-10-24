@@ -1,54 +1,35 @@
 {
   "manifest_version": 3,
-  "name": "Streaming Watchlist Organizer",
-  "version": "1.1.0",
-  "description": "Prime Video・Netflix・U-NEXTのウォッチリストをジャンル別に整理。視聴予定の作品を一覧・検索しやすくします。",
-  "permissions": ["storage"],
-  "host_permissions": [
-    "https://api.themoviedb.org/*"
+  "name": "Nozian Entertainment Hub",
+  "version": "1.8.0",
+  "description": "Netflixのマイリスト1周を検知して自動停止。縦スクロール型リストはページ下端で追加読込完了を確認して停止。",
+  "permissions": [
+    "storage"
   ],
   "action": {
-    "default_title": "Streaming Watchlist Organizer（同期版を開く）"
+    "default_title": "Entertainment Hub"
   },
-  "homepage_url": "https://swo-watchlist.nozian.chatgpt.site/",
   "background": {
     "service_worker": "background.js"
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["viewer.html"],
-      "matches": [
-        "https://www.amazon.co.jp/*",
-        "https://www.netflix.com/*",
-        "https://video.unext.jp/*"
-      ]
-    }
-  ],
   "content_scripts": [
     {
       "matches": [
         "https://www.amazon.co.jp/gp/video/*",
-        "https://www.amazon.com/gp/video/*"
+        "https://www.amazon.com/gp/video/*",
+        "https://www.netflix.com/browse*",
+        "https://video.unext.jp/*",
+        "https://www.youtube.com/*",
+        "https://www.primevideo.com/*",
+        "https://primevideo.com/*",
+        "https://www.netflix.com/*"
       ],
-      "js": ["prime.js", "content.js"],
-      "css": ["panel.css"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "https://www.netflix.com/browse*"
+      "js": [
+        "capture.js"
       ],
-      "js": ["netflix.js", "content.js"],
-      "css": ["panel.css"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "https://video.unext.jp/mylist*",
-        "https://video.unext.jp/browse*"
+      "css": [
+        "capture.css"
       ],
-      "js": ["unext.js", "content.js"],
-      "css": ["panel.css"],
       "run_at": "document_idle"
     }
   ]
