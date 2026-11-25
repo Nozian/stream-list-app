@@ -677,8 +677,38 @@
     }
   }
 
+  // Keep the library's canonical video URL for identity and tags.
+  // Only the grid's playback link carries the current playlist context.
+  function youtubeGridLinks() {
+    const links = new Map();
+    const playlistId = new URL(location.href).searchParams.get('list');
+    if (!playlistId) return links;
+    const tiles = document.querySelectorAll('ytd-playlist-video-renderer,ytd-playlist-panel-video-renderer');
+    for (const tile of tiles) {
+      const anchor = tile.querySelector('a#video-title,a#video-title-link,a[href*="watch?v="]');
+      const rawHref = anchor?.href || anchor?.getAttribute('href');
+      if (!rawHref) continue;
+      const href = safeUrl(rawHref);
+      if (!href) continue;
+      const url = new URL(href);
+      const id = url.searchParams.get('v');
+      if (!id || url.origin !== location.origin || url.pathname !== '/watch') continue;
+      if (url.searchParams.get('list') !== playlistId) {
+        url.searchParams.delete('index');
+      }
+      url.searchParams.set('list', playlistId);
+      if (!url.searchParams.has('index')) {
+        const index = tile.querySelector('#index')?.textContent.trim();
+        if (index && /^[1-9]\d*$/.test(index)) url.searchParams.set('index', index);
+      }
+      if (!links.has(id)) links.set(id, url.href);
+    }
+    return links;
+  }
+
   async function toggleGrid() {
     if(gridUI){gridUI.remove();gridUI=null;return;}
+    const playbackLinks=youtubeGridLinks();
     const videos=scan();if(videos.length)await persist(videos);if(!videos.length){status('動画がまだ読み込まれていません。まずリストをスクロールしてね。');return;}
     gridUI=document.createElement('section');gridUI.id='nz-ent-grid';gridUI.setAttribute('lang','ja');
     const controls=document.createElement('div');controls.className='nz-ent-gridbar';
@@ -696,7 +726,7 @@
     function render(){const q=normalized(search.value);cards.style.gridTemplateColumns=`repeat(${select.value},minmax(0,1fr))`;cards.replaceChildren();
       for(const v of videos){if(!normalized([v.title,tags.get(v.href)].join(' ')).includes(q))continue;
         const item=document.createElement('div');item.className='nz-ent-griditem';
-        const a=document.createElement('a');a.href=v.href;a.target='_blank';a.rel='noopener noreferrer';
+        const a=document.createElement('a');a.href=playbackLinks.get(v.sourceId)||v.href;a.target='_blank';a.rel='noopener noreferrer';
         const im=document.createElement('img');im.loading='lazy';im.src=v.thumbnail;im.alt='';a.append(im);
         a.title=v.title; a.setAttribute('aria-label',v.title);
         const title=document.createElement('p');title.textContent=v.title;title.className='nz-ent-video-title';a.append(title);
